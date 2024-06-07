@@ -7,12 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pengrad.telegrambot.request.SendMessage;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 
 @Service
@@ -23,7 +22,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     @Autowired
     private TelegramBot telegramBot;
 
-   private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @PostConstruct
     public void init() {
@@ -34,16 +32,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            if (update.message().text().equals("/start")) {
-                SendMessage message = new SendMessage(update.message().chat().id(), "Здравствуйте");
-                executor.execute(() -> {
-                    try {
-                        telegramBot.execute(message);
-                    } catch (TelegramApiException e) {
-                        logger.error("Ошибка", e);
-                    }
-                });
+            String text = update.message().text();
+            if (text.equals("/start")) {
+                Long chatId = update.message().chat().id(); // кому отправить
+                String message = "Hello!"; // что отправить
+                SendMessage sendMessage = new SendMessage(chatId, message); // создаём запрос на отправку сообщения
+                telegramBot.execute(sendMessage); // выполняем запрос
             }
+
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
