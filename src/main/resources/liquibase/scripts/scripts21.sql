@@ -6,5 +6,5 @@ CREATE TABLE notification_task (
     id SERIAL unique PRIMARY KEY,
     chat_id SERIAL,
     text_msg TEXT,
-    notification_time TIMESTAMP,
+    notification_time TIMESTAMP
 );
