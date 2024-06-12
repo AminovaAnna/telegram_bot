@@ -1,12 +1,15 @@
 package pro.sky.telegrambot.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import pro.sky.telegrambot.model.NotificationTask;
 
+import javax.persistence.Entity;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface NotificationTaskRepository extends JpaRepository<NotificationTask, Long> {
-    void setDateTime(LocalDateTime Notification_time);
-    void setItem(String text_msg);
+    List<NotificationTask> findNotificationTaskByDate (LocalDateTime time);
+
 
 }

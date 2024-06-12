@@ -1,39 +1,32 @@
 package pro.sky.telegrambot.model;
 
-import pro.sky.telegrambot.repository.NotificationTaskRepository;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
+@Table(name = "notification_task")
 public class NotificationTask {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
-    public long chat_id;
-    public String text_msg;
-    LocalDateTime notification_time;
+    private Long id;
+    private long chat_id;
+    private String text_msg;
+    private LocalDateTime date;
 
-    @Autowired
-    private NotificationTaskRepository repository;
 
-    public NotificationTask(long chat_id, String text_msg, LocalDateTime notification_time) {
+    public NotificationTask(long chat_id, String text_msg, LocalDateTime date) {
         this.chat_id = chat_id;
         this.text_msg = text_msg;
-        this.notification_time = notification_time;
+        this.date = date;
     }
 
     public NotificationTask() {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -57,12 +50,12 @@ public class NotificationTask {
         this.text_msg = text_msg;
     }
 
-    public LocalDateTime getNotification_time() {
-        return notification_time;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setNotification_time(LocalDateTime notification_time) {
-        this.notification_time = notification_time;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     @Override
@@ -70,12 +63,12 @@ public class NotificationTask {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NotificationTask that = (NotificationTask) o;
-        return id == that.id && chat_id == that.chat_id && Objects.equals(text_msg, that.text_msg) && Objects.equals(notification_time, that.notification_time);
+        return chat_id == that.chat_id && Objects.equals(id, that.id) && Objects.equals(text_msg, that.text_msg) && Objects.equals(date, that.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, chat_id, text_msg, notification_time);
+        return Objects.hash(id, chat_id, text_msg, date);
     }
 
     @Override
@@ -84,15 +77,7 @@ public class NotificationTask {
                 "id=" + id +
                 ", chat_id=" + chat_id +
                 ", text_msg='" + text_msg + '\'' +
-                ", notification_time=" + notification_time +
+                ", date=" + date +
                 '}';
-    }
-
-    public void setDateTime(LocalDateTime notification_time) {
-        repository.save(this);
-    }
-
-    public void setItem(String text_msg) {
-        repository.save(this);
     }
 }
