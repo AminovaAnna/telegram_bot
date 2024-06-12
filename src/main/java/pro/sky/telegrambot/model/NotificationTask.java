@@ -1,14 +1,18 @@
 package pro.sky.telegrambot.model;
 
+import pro.sky.telegrambot.repository.NotificationTaskRepository;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class NotificationTask {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
@@ -16,9 +20,10 @@ public class NotificationTask {
     public String text_msg;
     LocalDateTime notification_time;
 
+    @Autowired
+    private NotificationTaskRepository repository;
 
-    public NotificationTask(long id, long chat_id, String text_msg, LocalDateTime notification_time) {
-        this.id = id;
+    public NotificationTask(long chat_id, String text_msg, LocalDateTime notification_time) {
         this.chat_id = chat_id;
         this.text_msg = text_msg;
         this.notification_time = notification_time;
@@ -81,5 +86,13 @@ public class NotificationTask {
                 ", text_msg='" + text_msg + '\'' +
                 ", notification_time=" + notification_time +
                 '}';
+    }
+
+    public void setDateTime(LocalDateTime notification_time) {
+        repository.save(this);
+    }
+
+    public void setItem(String text_msg) {
+        repository.save(this);
     }
 }
