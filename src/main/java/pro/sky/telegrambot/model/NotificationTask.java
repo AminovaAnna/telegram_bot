@@ -13,6 +13,7 @@ public class NotificationTask {
     private Long id;
     private long chat_id;
     private String text_msg;
+    @Column(name = "notification_time")
     private LocalDateTime date;
 
 
